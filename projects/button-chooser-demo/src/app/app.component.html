@@ -1,18 +1,5 @@
-<h1>Button Chooser Demo</h1>
-<form>
-  <label>Würden Sie Angular weiterempfehlen?</label>
-  <ch-button-chooser [choices]="choices" name="answer"[(ngModel)]="answer">
-  </ch-button-chooser>
-</form>
-<div>Antwort: {{answer}}</div>
 
-<h2>Styling über CSS-Variablen</h2>
-<form novalidate #form="ngForm" class="purple-form">
-  <label>Welchen Library-Ansatz bevorzugen Sie?</label>
-  <ch-button-chooser [choices]="choices"
-    name="answer"[(ngModel)]="answer">
-  </ch-button-chooser>
-</form>
+<h1>Button Chooser Demo</h1>
 
 <h2>Styling über BEM</h2>
 
@@ -22,3 +9,24 @@
     name="answer"[(ngModel)]="answer">
   </ch-button-chooser-bem>
 </form>
+
+<h2>Styling über CSS-Variablen</h2>
+
+<form novalidate (ngSubmit)="register(form.value)" #form="ngForm" class="purple-form">
+  <label>Welchen Library-Ansatz bevorzugen Sie?</label>
+  <ch-button-chooser [choices]="choices"
+    name="answer"[(ngModel)]="answer">
+  </ch-button-chooser>
+</form>
+
+
+<div>Antwort: {{answer}}</div>
+
+<h1>Button-Chooser per WebComponent einbinden</h1>
+
+<ch-button-chooser-component [choices]="choices"
+                             (valueChanged)="valueChanged($any($event).detail)">
+</ch-button-chooser-component>
+
+<div>Antwort aus der WebComponent: {{answerFromWebComponent}}</div>
+

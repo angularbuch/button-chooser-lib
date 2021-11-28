@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -13,16 +13,22 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }]
 })
 export class ButtonChooserComponent implements ControlValueAccessor  {
+
+  constructor(private cd: ChangeDetectorRef) {}
+
   @Input() choices?: string[];
 
-  value?: string;
+  @Input() value?: string;
+
+  @Output() valueChanged = new EventEmitter<string>();
+
   isDisabled = false;
   propagateChange!: (value: any) => void;
   propagateTouched!: () => void;
 
   onBlur(isLast: boolean) {
     if (isLast) {
-      this.propagateTouched();
+      this.propagateTouched?.();
     }
   }
 
@@ -44,8 +50,10 @@ export class ButtonChooserComponent implements ControlValueAccessor  {
 
   changeValue(value: string) {
     this.value = value;
-    this.propagateChange(this.value);
-    this.propagateTouched();
+    this.valueChanged.emit(value);
+    this.propagateChange?.(this.value);
+    this.propagateTouched?.();
+    this.cd.detectChanges();
     return false;
   }
 }
